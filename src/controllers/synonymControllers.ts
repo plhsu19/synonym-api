@@ -11,6 +11,7 @@ const getSynonyms = (req: Request, res: Response): void => {
   try {
     const synonyms = [...synonymsMap.get(word)];
     res.status(200).json({
+      word: word,
       synonyms: synonyms,
     });
   } catch (e) {
@@ -21,15 +22,15 @@ const getSynonyms = (req: Request, res: Response): void => {
 };
 
 const addSynonyms = (req: Request, res: Response): void => {
-  const synonym1 = req.body.synonym1;
-  const synonym2 = req.body.synonym2;
+  const word = req.body.word;
+  const synonym = req.body.synonym;
   try {
-    addSynonymPair(synonym1, synonym2);
-    addSynonymPair(synonym2, synonym1);
+    addSynonymPair(word, synonym);
+    addSynonymPair(synonym, word);
     console.log(synonymsMap);
     res.status(201).json({
-      success: true,
-      synonymPair: [synonym1, synonym2],
+      word: word,
+      synonym: synonym,
     });
   } catch (e) {
     res.status(500).json({
