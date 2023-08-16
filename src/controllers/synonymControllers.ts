@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { SynonymsMap, SynonymsSet } from '../types/synonymsTypes.js';
-import { Dfs, functionalSearch } from '../helpers/synonymHelpers.js';
+import { Dfs } from '../helpers/synonymHelpers.js';
 import mockSynonymsMap from '../data/mockSynonymsMap.js';
 
 const INTERNAL_SYSTEM_FAILURE_ERROR_MESSAGE =
