@@ -1,18 +1,31 @@
 import { Request, Response } from 'express';
-
-// data structure to store synonyms
-const synonymsMap: Map<string, Set<string>> = new Map();
+import { SynonymsMap, SynonymsSet } from '../types/synonymsTypes.js';
+import { Dfs, functionalSearch } from '../helpers/synonymHelpers.js';
+import mockSynonymsMap from '../data/mockSynonymsMap.js';
 
 const INTERNAL_SYSTEM_FAILURE_ERROR_MESSAGE =
   'Something went wrong, please try again later or contact support.';
 
+let synonymsMap: SynonymsMap = new Map();
+// use mockSynonymsMap for development
+if (process.env.NODE_ENV === 'development') synonymsMap = mockSynonymsMap;
+
 const getSynonyms = (req: Request, res: Response): void => {
   const word: string = req.params.word;
   try {
-    const synonyms = [...synonymsMap.get(word)];
+    // Object DFS search
+    // const dfs = new Dfs();
+    // const synonyms: SynonymsSet = dfs.getSynonymsResult(word, synonymsMap);
+
+    // functional DFS search
+    const synonyms = functionalSearch(word, synonymsMap, new Set());
+    
+    synonyms.delete(word);
+
     res.status(200).json({
       word: word,
-      synonyms: synonyms,
+      number: synonyms.size,
+      synonyms: [...synonyms],
     });
   } catch (e) {
     res.status(500).json({
@@ -27,7 +40,6 @@ const addSynonyms = (req: Request, res: Response): void => {
   try {
     addSynonymPair(word, synonym);
     addSynonymPair(synonym, word);
-    console.log(synonymsMap);
     res.status(201).json({
       word: word,
       synonym: synonym,
