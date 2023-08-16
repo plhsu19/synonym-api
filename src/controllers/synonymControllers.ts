@@ -14,11 +14,11 @@ const getSynonyms = (req: Request, res: Response): void => {
   const word: string = req.params.word;
   try {
     // Object DFS search
-    // const dfs = new Dfs();
-    // const synonyms: SynonymsSet = dfs.getSynonymsResult(word, synonymsMap);
+    const dfs = new Dfs();
+    const synonyms: SynonymsSet = dfs.getSynonymsResult(word, synonymsMap);
 
     // functional DFS search
-    const synonyms = functionalSearch(word, synonymsMap, new Set());
+    // const synonyms = functionalSearch(word, synonymsMap, new Set());
     
     synonyms.delete(word);
 

@@ -15,7 +15,7 @@ export class Dfs {
     this.synonymsSet.add(word);
     const synonyms = map.get(word);
 
-    if (synonyms.size === 0) return;
+    if (synonyms == null || synonyms.size === 0) return;
 
     synonyms.forEach((synonym: string) => {
       if (!this.synonymsSet.has(synonym)) this.search(synonym, map);
@@ -32,7 +32,7 @@ export const functionalSearch = (
   updatedSet.add(word);
 
   const synonyms = map.get(word);
-  if (synonyms.size === 0) return updatedSet;
+  if (synonyms == null || synonyms.size === 0) return updatedSet;
 
   const synonymsArray: string[] = [...synonyms];
   const updatedSynonymsSet = synonymsArray.reduce(
